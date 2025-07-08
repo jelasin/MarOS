@@ -1,43 +1,51 @@
-BOOTSEG=0x7c0
+	jmp near start
+	
+mytext db 'L',0x07,'a',0x07,'b',0x07,'e',0x07,'l',0x07,' ',0x07,'o',0x07,\
+	'f',0x07,'f',0x07,'s',0x07,'e',0x07,'t',0x07,':',0x07
+number db 0,0,0,0,0
 
-.code16
-.text
+start:
+	mov ax,0x7c0                  ;设置数据段基地址 
+	mov ds,ax
+	
+	mov ax,0xb800                 ;设置附加段基地址 
+	mov es,ax
+	
+	cld
+	mov si,mytext                 
+	mov di,0
+	mov cx,(number-mytext)/2      ;实际上等于 13
+	rep movsw
 
-.global _start
-_start:
-	jmp start2
+	;得到标号所代表的偏移地址
+	mov ax,number
+	
+	;计算各个数位
+	mov bx,ax
+	mov cx,5                      ;循环次数 
+	mov si,10                     ;除数 
+digit: 
+	xor dx,dx
+	div si
+	mov [bx],dl                   ;保存数位
+	inc bx 
+	loop digit
+	
+	;显示各个数位
+	mov bx,number 
+	mov si,4                      
+show:
+	mov al,[bx+si]
+	add al,0x30
+	mov ah,0x04
+	mov [es:di],ax
+	add di,2
+	dec si
+	jns show
+	
+	mov word [es:di],0x0744
 
-start2:
-	movw $BOOTSEG,%ax
-	movw %ax,%ds
-	movw %ax,%es
-	movw %ax,%fs
-	movw %ax,%gs
-	movw $BOOTSEG, %sp # 设置栈指针
+	jmp near $
 
-	# 设置视频模式为 320x200 256色图形模式
-	movw $0x0013, %ax   # ah=0x00 (设置模式), al=0x13 (模式号)
-	int $0x10
-
-	# 使用 Teletype (ah=0x0e) 循环打印字符串
-	movw $msg, %si
-	movb $0x0e, %ah     # ah = 0x0e -> Teletype 输出功能
-	movb $0x00, %bh     # bh = 0x00 -> 视频页码 0
-	movb $0x0c, %bl     # bl = 0x0c -> 前景色: 亮红色 (在图形模式下生效)
-print_loop:
-	lodsb               # 从 [ds:si] 加载一个字节到 al, 并增加 si
-	cmpb $0, %al        # 检查是否是字符串结尾 (null)
-	je halt             # 如果是，则跳转到 halt
-	int $0x10           # 调用 BIOS 视频服务
-	jmp print_loop      # 继续循环
-
-halt:
-	jmp halt            # 无限循环，停止执行
-
-msg:
-	.ascii "Ciallo~\r\n"
-	.byte 0             # 字符串以 null 结尾
-
-.org 510
-boot_flag:
-	.word 0xaa55
+times 510-($-$$) db 0
+			db 0x55,0xaa ;引导扇区标志	
