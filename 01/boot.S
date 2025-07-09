@@ -15,10 +15,13 @@ start:
 	cld                           ; CLD = Clear Direction Flag（清除方向标志）
 	                              ; 设置DF标志位为0，使字符串操作指令从低地址向高地址进行
 	                              ; 与STD（Set Direction Flag）指令相对
-	                              ; 影响MOVS、LODS、STOS等字符串操作指令的方向
 	mov si,mytext                 ; 源地址指向mytext数据（DS:SI = 数据段中的文本）
 	mov di,0                      ; 目标地址指向显存起始位置（ES:DI = 显存段0xB8000开始）
-	mov cx,(number-mytext)        ; 计算要复制的字数（字节数除以2）
+	mov cx,(number-mytext)        ; 计算要复制的字符串长度
+	                              ; CX = 字符串长度（number标号位置 - mytext标号位置）
+	                              ; 这里计算的是mytext的长度，包含所有字符和属性字节
+	                              ; 注意：mytext和number之间的距离是字节数，所以直接相减即可
+	                              ; 如果需要复制的字节数是偶数，则可以直接使用
 	rep movsb                     ; rep movsb详解：
 	                              ; - movsb指令从DS:SI复制一个字节到ES:DI
 	                              ; - 复制后SI和DI自动递增1（因为cld清除了方向标志）
