@@ -204,15 +204,7 @@ begin:
 ; 包含第一段要显示的信息
 SECTION data_1 align=16 vstart=0
 
-msg0 db '  This is NASM - the famous Netwide Assembler. '
-    db 'Back at SourceForge and in intensive development! '
-    db 'Get the current versions from http://www.nasm.us/.'
-    db 0x0d,0x0a,0x0d,0x0a
-    db '  Fun Facts about Assembly:',0x0d,0x0a
-    db '  - Assembly was first used in 1947 on EDSAC computer',0x0d,0x0a
-    db '  - One assembly instruction = one machine code',0x0d,0x0a
-    db '  - x86 has over 1000 different instructions!',0x0d,0x0a
-    db '  - The fastest code is often written in Assembly',0x0d,0x0a,0x0d,0x0a
+msg0 db 0x0d,0x0a,0x0d,0x0a
     db '  Did you know? The Intel 8086 (1978) had:',0x0d,0x0a
     db '  - 29,000 transistors  - 16-bit registers',0x0d,0x0a
     db '  - 1MB memory limit   - 5-10 MHz clock speed',0x0d,0x0a,0x0d,0x0a
