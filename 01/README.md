@@ -146,7 +146,7 @@ jns show            ; 如果符号标志SF=0则跳转
 
 ## 扩展知识
 
-### 1. x86处理器架构
+### 1. 8086处理器架构
 
 #### 寄存器组织
 
@@ -240,11 +240,8 @@ mov cx,(number-mytext)  ; 编译时计算长度
 
 ### 编译环境
 
-推荐使用：
-
 - **NASM**：Netwide Assembler
 - **QEMU**：虚拟机测试
-- **Bochs**：x86模拟器
 
 ### 编译命令
 
@@ -297,33 +294,6 @@ DIV指令遇到零除数会产生异常，需要检查除数。
 ### 4. 引导签名缺失
 
 引导扇区必须以`0x55AA`结尾，否则BIOS不会识别。
-
-## 学习路径
-
-### 初学者
-
-1. 理解汇编语言基本语法
-2. 掌握寄存器和内存概念
-3. 学习基本指令集
-
-### 进阶学习
-
-1. 中断和系统调用
-2. 保护模式编程
-3. 操作系统内核开发
-
-### 实践项目
-
-1. 扩展显示功能
-2. 添加键盘输入
-3. 实现简单的文件系统
-
-## 参考资料
-
-1. **Intel 8086 Family User's Manual**
-2. **IBM PC Technical Reference**
-3. **Assembly Language for x86 Processors** - Kip Irvine
-4. **Professional Assembly Language** - Richard Blum
 
 ---
 
